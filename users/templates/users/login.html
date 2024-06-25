@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/snippets_basic.css' %}">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-container p {
+            margin-bottom: 10px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .form-container input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .form-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: #f44336;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Login</h2>
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <p class="error">{{ form.non_field_errors|join:" " }}</p>
+            {% endif %}
+
+            <p>
+                <label for="id_username">Username:</label>
+                {% if form.username.errors %}
+                    <span class="error">{{ form.username.errors|join:" " }}</span>
+                {% endif %}
+                {{ form.username }}
+            </p>
+
+            <p>
+                <label for="id_password">Password:</label>
+                {% if form.password.errors %}
+                    <span class="error">{{ form.password.errors|join:" " }}</span>
+                {% endif %}
+                {{ form.password }}
+            </p>
+
+            <input type="hidden" name="next" value="{{ next }}">
+
+            <p>
+                <input type="submit" value="Login">
+            </p>
+        </form>
+    </div>
+    <footer>
+        <h1>
+            <p>Back to <a href="{% url 'home' %}">Home</a></p>
+        </h1>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snippet List</title>
+    <link rel="stylesheet" href="{% static 'css/listed.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: #007BFF;
+        }
+
+        nav {
+            order: 2; /* Ensures nav is at the rightmost */
+        }
+
+        nav a {
+            margin-left: 10px; /* Adjust spacing between links */
+        }
+
+        main ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        main ul li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            font-size: 1.2em;
+            border-bottom: 1px solid #ccc;
+        }
+
+        main ul li a {
+            text-decoration: none;
+            color: #007BFF;
+            transition: color 0.3s;
+        }
+
+        main ul li a:hover {
+            color: #0056b3;
+        }
+
+        .remove-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .pagination .step-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pagination .step-links a,
+        .pagination .step-links .current {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            color: #007BFF;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination .step-links a:hover {
+            background-color: #e9ecef;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Snippet List</h1>
+
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'add_snippet' %}" class="btn">Add Snippet</a> <!-- Link to Add Snippet -->
+        </nav>
+    </header>
+
+    <form method="get" action="{% url 'snippet_list' %}" class="form-inline my-2 my-lg-0">
+        {% csrf_token %}
+        <label>
+            <input type="text" id="searchInput" name="q" value="{{ request.GET.q }}" placeholder="Search..."
+                   class="form-control mr-sm-2">
+        </label>
+        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+    </form>
+
+    <main>
+        <ul>
+            {% for snippet in snippets %}
+                <li>
+                    <span>
+                        <a href="{% url 'snippet_detail' snippet.pk %}">{{ snippet.title }}</a>
+                    </span>
+                </li>
+            {% empty %}
+                <p>No snippets found.</p>
+            {% endfor %}
+        </ul>
+    </main>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if snippets.has_previous %}
+                <a href="?page=1">&laquo; First</a>
+                <a href="?page={{ snippets.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ snippets.number }} of {{ snippets.paginator.num_pages }}.
+            </span>
+
+            {% if snippets.has_next %}
+                <a href="?page={{ snippets.next_page_number }}">Next</a>
+                <a href="?page={{ snippets.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.querySelector('form[action="{% url 'snippet_list' %}"]');
+            var searchInput = document.getElementById('searchInput');
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent form submission
+
+                // Fetch snippets and check if empty
+                var snippets = document.querySelectorAll('main ul li');
+                if (snippets.length === 0) {
+                    searchInput.value = ''; // Clear search input
+                }
+
+                // Proceed with form submission
+                form.submit();
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

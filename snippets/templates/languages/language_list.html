@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language List</title>
+    <link rel="stylesheet" href="{% static 'css/listed.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: #007BFF;
+        }
+
+        main ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        main ul li {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+
+        main ul li a {
+            text-decoration: none;
+            color: #007BFF;
+            transition: color 0.3s;
+        }
+
+        main ul li a:hover {
+            color: #0056b3;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .pagination .step-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pagination .step-links a,
+        .pagination .step-links .current {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            color: #007BFF;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination .step-links a:hover {
+            background-color: #e9ecef;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Languages</h1>
+    </header>
+    <header>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+        </nav>
+    </header>
+
+    <main>
+        <ul>
+            {% for language in languages %}
+                <li><a href="{% url 'language_detail' language.slug %}">{{ language.name }}</a></li>
+            {% endfor %}
+        </ul>
+        <div class="pagination">
+                <span class="step-links">
+                    {% if languages.has_previous %}
+                        <a href="?page=1">&laquo; First</a>
+                        <a href="?page={{ languages.previous_page_number }}">Previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ languages.number }} of {{ languages.paginator.num_pages }}.
+                    </span>
+
+                    {% if languages.has_next %}
+                        <a href="?page={{ languages.next_page_number }}">Next</a>
+                        <a href="?page={{ languages.paginator.num_pages }}">Last &raquo;</a>
+                    {% endif %}
+                </span>
+        </div>
+    </main>
+
+</div>
+</body>
+</html>

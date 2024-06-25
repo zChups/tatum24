@@ -1,0 +1,115 @@
+{% extends 'tatum24/templates/base.html' %}
+{% load static %}
+
+{% block title %}{{ snippet.title }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/snippet_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pygments.css' %}">
+    <style>
+        .edit-btn {
+            float: right;
+            margin-top: -35px;
+            margin-right: 10px;
+        }
+
+        .bookmark-btn {
+            float: right;
+            margin-top: -35px;
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+
+        .bookmarked {
+            background-color: green; /* Green color for bookmarked */
+            color: white;
+            border: 1px solid darkgreen;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .disliked {
+            background-color: red; /* Green color for liked */
+            color: white;
+            border: 5px solid darkred;
+            padding: 5px 10px;
+            border-radius: 10px;
+        }
+
+        .liked {
+            background-color: green; /* Green color for liked */
+            color: white;
+            border: 5px solid darkgreen;
+            padding: 5px 10px;
+            border-radius: 10px;
+        }
+
+        .hidden {
+            display: none; /* Hide the button */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header>
+        <h1>{{ snippet.title }}</h1>
+        <p class="meta">Created at: {{ snippet.pub_date }}</p>
+        <p class="meta">Updated at: {{ snippet.update_date }}</p>
+        <p class="meta">Author: {{ snippet.author }}</p>
+    </header>
+
+    <main>
+        {% if user.is_authenticated and user == snippet.author %}
+            <a href="{% url 'edit_snippet' snippet.pk %}" class="btn btn-primary edit-btn">Edit Snippet</a>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            {% if not bookmarked %}
+                <a href="{% url 'add_bookmark' snippet_id=snippet.pk %}" class="btn btn-success bookmark-btn">Add Bookmark</a>
+            {% else %}
+                <form action="{% url 'delete_bookmark' snippet_id=snippet.pk %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn bookmark-btn bookmarked">Bookmarked</button>
+                </form>
+            {% endif %}
+        {% endif %}
+
+        <h3>Description</h3>
+        <div class="code-highlight">
+            {{ snippet.description_html | safe }}
+        </div>
+        <h4>---</h4>
+        <div class="snippet-code highlight">{{ snippet.highlighted_code | safe }}</div>
+    </main>
+
+    <footer class="mt-4">
+        <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+        <a href="{% url 'snippet_list' %}" class="btn btn-secondary">Back to Snippet List</a>
+        {% if user.is_authenticated and user == snippet.author %}
+            <a href="{% url 'profile' %}" class="btn btn-secondary">Back to Profile</a>
+        {% endif %}
+    </footer>
+
+    <!-- Form to rate the snippet -->
+    <form action="{% url 'rate_snippet' snippet.pk %}" method="post">
+        {% csrf_token %}
+        {% if snippet.user_rating == 'like' %}
+            <button type="button" class="btn liked" disabled>Liked</button>
+            <button type="submit" name="rating" value="dislike" class="btn disliked">Dislike</button>
+        {% elif snippet.user_rating == 'dislike' %}
+            <button type="submit" name="rating" value="like" class="btn liked">Like</button>
+            <button type="button" class="btn disliked" disabled>Disliked</button>
+        {% else %}
+            <button type="submit" name="rating" value="like" class="btn liked">Like</button>
+            <button type="submit" name="rating" value="dislike" class="btn disliked">Dislike</button>
+        {% endif %}
+    </form>
+
+    <!-- Display number of likes and dislikes -->
+    <footer>
+        <h3>Likes: {{ snippet.get_likes }}</h3>
+        <h3>Dislikes: {{ snippet.get_dislikes }}</h3>
+    </footer>
+</div>
+{% endblock %}

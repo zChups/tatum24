@@ -1,0 +1,62 @@
+ul.messages {
+    position: fixed;
+    top: 50px; /* Align messages to the vertical center of the viewport */
+    left: 50%; /* Align messages to the horizontal center of the viewport */
+    transform: translate(-50%, -50%); /* Center the messages precisely */
+    z-index: 1000;
+    list-style-type: none;
+    padding: 2px;
+    margin: 0;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-width: 400px; /* Limit the width of the messages box */
+    text-align: center; /* Center the text inside the messages */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+ul.messages li {
+    margin-bottom: 5px;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+ul.messages .error {
+    background-color: #f44336;
+    color: white;
+}
+
+ul.messages .info {
+    background-color: #007BFF;
+    color: white;
+}
+
+ul.messages .success {
+    background-color: #28a745;
+    color: white;
+}
+
+ul.messages .warning {
+    background-color: #ffc107;
+    color: #333;
+}
+
+ul.messages .close {
+    float: right;
+    cursor: pointer;
+    color: #333;
+    text-decoration: none;
+}
+
+ul.messages .close:hover {
+    color: #000;
+}
+
+ul.messages li a.close {
+    margin:0;
+    float:right;
+    opacity:1;
+    border:0;
+    box-shadow:none;
+    text-shadow:none;
+}

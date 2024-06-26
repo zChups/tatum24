@@ -109,7 +109,6 @@
                         <h2 class="bookmark-title">
                             <a href="{% url 'snippet_detail' bookmark.snippet.pk %}">{{ bookmark.snippet.title }}</a>
                         </h2>
-                        <p class="bookmark-details">Bookmarked on: {{ bookmark.timestamp }}</p>
                         <form action="{% url 'delete_bookmark' snippet_id=bookmark.snippet.pk %}" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn remove-button">Remove Bookmark</button>

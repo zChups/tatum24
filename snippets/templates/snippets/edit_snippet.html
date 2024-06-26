@@ -6,50 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Snippet</title>
     <link rel="stylesheet" href="{% static 'css/snippet_detail.css' %}">
-    <link rel="stylesheet" href="{% static 'css/pygments.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container">
-    <h2>Edit Snippet</h2>
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
+<div class="container mt-5">
+    <h2 class="text-center">Edit Snippet</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             <form method="post">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="id_title">Title:</label>
                     <input type="text" class="form-control" id="id_title" name="title" value="{{ form.title.value }}">
-                    <!-- If using a CharField -->
-                    <!-- {{ form.title }} -->
-                </div>
-                <div class="form-group">
-                    <label for="id_description">Description:</label>
-                    <textarea class="form-control" id="id_description" name="description">{{ form.description.value }}</textarea>
-                    <!-- If using a TextField -->
-                    <!-- {{ form.description }} -->
-                </div>
-                <div class="form-group">
-                    <label for="id_code">Code:</label>
-                    <textarea class="form-control" id="id_code" name="code">{{ form.code.value }}</textarea>
-                    <!-- If using a TextField -->
-                    <!-- {{ form.code }} -->
-                </div>
-                <div class="form-group">
-                    <label for="id_tags">Tags:</label>
-                    <input type="text" class="form-control" id="id_tags" name="tags" value="{{ form.tags.value }}">
-                    <!-- If using a CharField -->
-                    <!-- {{ form.tags }} -->
                 </div>
                 <div class="form-group">
                     <label for="id_language">Language:</label>
                     <select class="form-control" id="id_language" name="language">
                         {% for choice in form.language %}
-                        <option value="{{ choice.value }}" {% if choice.selected %}selected{% endif %}>{{ choice }}</option>
+                            <option value="{{ choice.value }}"
+                                    {% if choice.selected %}selected{% endif %}>{{ choice }}</option>
                         {% endfor %}
                     </select>
-                    <!-- If using a ModelChoiceField -->
-                    <!-- {{ form.language }} -->
                 </div>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <div class="form-group">
+                    <label for="id_description">Description:</label>
+                    <textarea class="form-control" id="id_description" name="description"
+                              rows="5">{{ form.description.value }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="id_code">Code:</label>
+                    <textarea class="form-control" id="id_code" name="code" rows="10">{{ form.code.value }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="id_tags">Tags:</label>
+                    <input type="text" class="form-control" id="id_tags" name="tags" value="{{ form.tags.value }}">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
             </form>
         </div>
     </div>

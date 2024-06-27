@@ -19,3 +19,7 @@ Gli **utenti registrati** potranno **modificare** i propri **segnalibri** (relat
 Gli utenti registrati devono poter **valutare (like/dislike)** gli snippet di codice. Verrà generata una classifica dei **Top-Rated Snippet**. Non si intende valutare gli snippet di codice tra di loro, la funzione di rating inserita (like/dislike) permetterà agli utenti di avere una valutazione qualitativa immediata (garantita dal numero di like) sulla correttezza e efficienza del codice.
 
 **Ulteriore implementazione: funzionalità per commenti sotto gli snippet?**
+
+
+pip install pigments
+pip install markdown

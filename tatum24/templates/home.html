@@ -6,132 +6,136 @@
     <style>
         /* Global styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Verdana', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f9; /* Soft background color */
             color: #333;
             line-height: 1.6;
-        }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            background-color: #fff; /* White background */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft box shadow */
-            border-radius: 8px;
-        }
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                position: relative;
+                background-color: #fff; /* White background */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft box shadow */
+                border-radius: 8px;
+            }
 
-        /* Header styles */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 20px 0;
-            border-bottom: 1px solid #ddd; /* Light border */
-        }
+            /* Header styles */
 
-        .header h1 {
-            font-size: 2.5em;
-            color: #007BFF; /* Accent color */
-            margin: 10px 0;
-        }
+            .header {
+                text-align: center;
+                margin-bottom: 40px;
+                padding: 20px 0;
+                border-bottom: 1px solid #ddd; /* Light border */
+            }
 
-        .header p {
-            font-size: 1.2em;
-            margin-top: 5px;
-            color: #666; /* Darker text color */
-        }
+            .header h1 {
+                font-size: 2.5em;
+                color: #0056b3; /* Accent color */
+                margin: 10px 0;
+            }
 
-        .header .user-info {
-            margin-top: 20px;
-        }
+            .header p {
+                font-size: 1.2em;
+                margin-top: 5px;
+                color: #666; /* Darker text color */
+            }
 
-        .header .user-info a {
-            color: #007BFF;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
+            .header .user-info {
+                margin-top: 20px;
+            }
 
-        .header .user-info a:hover {
-            color: #0056b3; /* Darker accent color on hover */
-        }
+            .header .user-info a {
+                color: #007BFF;
+                text-decoration: none;
+                transition: color 0.3s;
+            }
 
-        /* Navigation styles */
-        .menu {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd; /* Light border */
-        }
+            .header .user-info a:hover {
+                color: #0056b3; /* Darker accent color on hover */
+            }
 
-        .menu ul {
-            list-style-type: none;
-            padding: 0;
-        }
+            /* Navigation styles */
 
-        .menu ul li {
-            display: inline-block;
-            margin-right: 20px;
-        }
+            .menu {
+                text-align: center;
+                margin-bottom: 40px;
+                padding: 10px 0;
+                border-bottom: 1px solid #ddd; /* Light border */
+            }
 
-        .menu ul li a {
-            color: #f0f0f0; /* Accent color */
-            text-decoration: none;
-            font-size: 1.2em;
-            transition: color 0.3s;
-            padding: 10px 15px;
-            border-radius: 4px;
-        }
+            .menu ul {
+                list-style-type: none;
+                padding: 0;
+            }
 
-        .menu ul li a:hover {
-            background-color: #007BFF;
-            color: #fff; /* White text on hover */
-        }
+            .menu ul li {
+                display: inline-block;
+                margin-right: 20px;
+            }
 
-        /* Profile button */
-        .profile-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            background-color: #0056b3; /* Darker accent color */
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
+            .menu ul li a {
+                color: #f0f0f0; /* Accent color */
+                text-decoration: none;
+                font-size: 1.2em;
+                transition: color 0.3s;
+                padding: 10px 15px;
+                border-radius: 4px;
+            }
 
-        .profile-button:hover {
-            background-color: #004080; /* Even darker on hover */
-        }
+            .menu ul li a:hover {
+                background-color: #007BFF;
+                color: #fff; /* White text on hover */
+            }
 
-        /* Main content */
-        .main-content {
-            padding: 20px 0;
-        }
+            /* Profile button */
 
-        /* Footer */
-        footer {
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px 0;
-            border-top: 1px solid #ddd; /* Light border */
-        }
+            .profile-button {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                background-color: #0056b3; /* Darker accent color */
+                color: white;
+                text-decoration: none;
+                font-size: 16px;
+                transition: background-color 0.3s;
+            }
 
-        footer .footer-links a {
-            color: #007BFF;
-            text-decoration: none;
-            margin: 0 10px;
-            transition: color 0.3s;
-        }
+            .profile-button:hover {
+                background-color: #004080; /* Even darker on hover */
+            }
 
-        footer .footer-links a:hover {
-            color: #0056b3; /* Darker accent color on hover */
-        }
+            /* Main content */
+
+            .main-content {
+                padding: 20px 0;
+            }
+
+            /* Footer */
+
+            footer {
+                text-align: center;
+                margin-top: 20px;
+                padding: 10px 0;
+                border-top: 1px solid #ddd; /* Light border */
+            }
+
+            footer .footer-links a {
+                color: #007BFF;
+                text-decoration: none;
+                margin: 0 10px;
+                transition: color 0.3s;
+            }
+
+            footer .footer-links a:hover {
+                color: #0056b3; /* Darker accent color on hover */
+            }
 
     </style>
 
@@ -152,6 +156,13 @@
                     <p>Logged in as: <a href="{% url 'profile' %}"
                                         style="color: #0056b3;">{{ request.user.username }}</a>
                     </p>
+
+                    {% if user.groups.filter.exists %}
+                        <p>
+                            Thanks for your work... moderator
+                        </p>
+                    {% endif %}
+
                     <p><a href="{% url 'logout' %}" style="color: #0056b3;">Logout</a></p>
                 {% else %}
                     <p><a href="{% url 'login' %}" style="color: #0056b3;">Login</a> | <a href="{% url 'signup' %}"
@@ -164,6 +175,14 @@
                 <a href="{% url 'profile' %}" class="profile-button">Profile</a>
             {% endif %}
         </header>
+
+        <div class="main-content">
+
+            <p>Discover curated snippets, explore trending languages, and learn from the best in the field. Join our
+                community of passionate coders.</p>
+
+            <p>Ready to dive in? Start exploring now and unlock the endless possibilities of coding with Tatum24.</p>
+        </div>
 
         <h2>Generals...</h2>
         <!-- Navigation -->
@@ -190,14 +209,7 @@
                 <li><a href="{% url 'user_bookmarks' %}" style="color: #f8f9fa;">User Bookmarks</a></li>
             </ul>
         </nav>
-        <!-- Main content -->
-        <div class="main-content">
 
-            <p>Discover curated snippets, explore trending languages, and learn from the best in the field. Join our
-                community of passionate coders.</p>
-
-            <p>Ready to dive in? Start exploring now and unlock the endless possibilities of coding with Tatum24.</p>
-        </div>
 
         <h2>Rating System...</h2>
         <nav class="menu">

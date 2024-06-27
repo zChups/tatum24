@@ -60,7 +60,7 @@
     </header>
 
     <main>
-        {% if user.is_authenticated and user == snippet.author %}
+        {% if user.is_authenticated and user == snippet.author or user.groups.filter.exists  %}
             <a href="{% url 'edit_snippet' snippet.pk %}" class="btn btn-primary edit-btn">Edit Snippet</a>
         {% endif %}
 

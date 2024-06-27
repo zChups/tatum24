@@ -24,8 +24,9 @@ body {
 
 .header h1 {
     font-size: 3rem;
+    font-family: 'Georgia', serif;
     color: #fff; /* white text on dark background for better contrast */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* shadow for text readability */
+    text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.8); /* shadow for text readability */
 }
 
 .header p {

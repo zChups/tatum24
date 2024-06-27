@@ -11,14 +11,14 @@
 <body>
 
 {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">
-                {{ message|safe }}
-                <a href="#" class="close" onclick="closeMessage(event)">&times;</a>
-            </li>
-        {% endfor %}
-    </ul>
+<ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}" id="message-{{ forloop.counter }}">
+        {{ message|safe }}
+        <a href="#" class="close" onclick="closeMessage(event)"> &times;</a>
+    </li>
+    {% endfor %}
+</ul>
 {% endif %}
 
 <div class="content">
@@ -27,11 +27,22 @@
 </div>
 
 <script>
-    function closeMessage(event) {
-        event.preventDefault();
-        const messageBox = event.target.parentNode;
-        messageBox.style.display = 'none';
+    function hideMessage(ms){
+        const messages = document.querySelectorAll('.messages');
+        messages.forEach((message, index) => {
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, ms); // 10000 milliseconds = 5 seconds
+        });
     }
+
+    function closeMessage(event) {
+        hideMessage(0);
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        hideMessage(3000)
+    });
 </script>
 
 </body>

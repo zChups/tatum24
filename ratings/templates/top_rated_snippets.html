@@ -108,9 +108,11 @@
             <tbody>
                 {% for snippet in top_snippets %}
                     <tr>
-                        <td>{{ snippet.title }}</td>
-                        <td>{{ snippet.author.username }}</td>
-                        <td>{{ snippet.get_likes }}</td>
+                        {%  if snippet.get_likes > 0 %}
+                            <td>{{ snippet.title }}</td>
+                            <td>{{ snippet.author.username }}</td>
+                            <td>{{ snippet.get_likes }}</td>
+                    {% endif %}
                     </tr>
                 {% empty %}
                     <tr>

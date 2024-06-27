@@ -15,10 +15,6 @@ def LoginView(request):
                 login(request, user)
                 messages.success(request, 'Login successful')
                 return redirect('home')
-            else:
-                messages.error(request, 'Invalid username or password.')
-        else:
-            messages.error(request, 'Invalid username or password.')
     else:
         form = AuthenticationForm()
 

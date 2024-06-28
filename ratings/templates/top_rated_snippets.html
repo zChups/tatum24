@@ -14,6 +14,7 @@
             margin: 0;
             padding: 0;
         }
+
         .container {
             max-width: 800px;
             margin: 20px auto;
@@ -22,19 +23,23 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
+
         header {
             text-align: center;
             margin-bottom: 20px;
         }
+
         header h1 {
             font-size: 2.5em;
             margin: 0;
             color: #007BFF;
         }
+
         footer {
             margin-top: 20px;
             text-align: center;
         }
+
         footer .btn {
             display: inline-block;
             margin-right: 10px;
@@ -45,32 +50,39 @@
             border-radius: 4px;
             transition: background-color 0.3s;
         }
+
         footer .btn:hover {
             background-color: #0056b3;
         }
+
         main table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
+
         main th, main td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
         main th {
             background-color: #f2f2f2;
         }
+
         .pagination {
             display: flex;
             justify-content: center;
             align-items: center;
             margin-top: 20px;
         }
+
         .pagination .step-links {
             display: flex;
             gap: 10px;
         }
+
         .pagination .step-links a,
         .pagination .step-links .current {
             padding: 8px 16px;
@@ -81,6 +93,7 @@
             text-decoration: none;
             transition: background-color 0.3s, color 0.3s;
         }
+
         .pagination .step-links a:hover {
             background-color: #e9ecef;
         }
@@ -94,31 +107,38 @@
             <a href="{% url 'home' %}" class="btn">Back to Home</a>
             <a href="{% url 'snippet_list' %}" class="btn">Back to Snippets</a>
         </footer>
+
+        <address>
+            <br>
+            <b>
+                Results are determined by the difference between snippets' likes and dislikes, <br>starting from the youngest.
+            </b>
+        </address>
     </header>
 
     <main>
         <table>
             <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Likes</th>
-                </tr>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Result</th>
+            </tr>
             </thead>
             <tbody>
-                {% for snippet in top_snippets %}
-                    <tr>
-                        {%  if snippet.get_likes > 0 %}
-                            <td>{{ snippet.title }}</td>
-                            <td>{{ snippet.author.username }}</td>
-                            <td>{{ snippet.get_likes }}</td>
+            {% for item in top_snippets %}
+                <tr>
+                    {% if item.popularity_score > 0 %}
+                        <td>{{ item.snippet.title }}</td>
+                        <td>{{ item.snippet.author }}</td>
+                        <td>{{ item.popularity_score }}</td>
                     {% endif %}
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="3">No snippets found.</td>
-                    </tr>
-                {% endfor %}
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No snippets found...</td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </main>

@@ -51,8 +51,8 @@ class Snippet(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.pub_date = timezone.now()  # Set pub_date only when creating a new object
-        self.update_date = timezone.now()  # Always update update_date
+            self.pub_date = timezone.now()
+        self.update_date = timezone.now()
         self.description_html = markdown(self.description)  # Convert description to HTML
         self.highlighted_code = self.highlight()  # Highlight code based on language
         super().save(*args, **kwargs)

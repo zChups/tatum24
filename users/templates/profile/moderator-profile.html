@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "tatum24/templates/base.html" %}
 {% load static %}
 
 {% block title %}
@@ -28,22 +28,23 @@
 <div class="container">
     <header>
         <h1>{{ user.username }}'s Profile</h1>
-        <p>e-mail: {{ user.email }}</p>
+        <p>Hi moderator! </p>
     </header>
 
     <main>
-        <h2>Your Snippets</h2>
+        <h2>Here you are all the snippets...</h2>
         {% if snippets %}
             <ul class="snippet-list">
                 {% for snippet in snippets %}
                     <li>
                         <h3><a href="{% url 'snippet_detail' snippet.pk %}">{{ snippet.title }}</a></h3>
-                        {% if user.is_authenticated and snippet.author == user %}
+                        {% if user.is_authenticated %}
                             <form action="{% url 'snippet_remove' snippet.pk %}" method="post" class="confirm-delete">
                                 {% csrf_token %}
                                 <button type="button" class="remove-button" onclick="confirmDelete('{{ snippet.pk }}')">Remove</button>
                             </form>
                         {% endif %}
+                        <p class="meta">Author: {{ snippet.author }}</p>
                         <p class="meta">Updated at: {{ snippet.update_date }}</p>
                     </li>
                 {% endfor %}

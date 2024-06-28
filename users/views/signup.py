@@ -7,7 +7,7 @@ from users.signup_form import SignupForm  # Import your signup form
 class SignupView(View):
     def get(self, request):
         form = SignupForm()
-        return render(request, 'users/signup.html', {'form': form})
+        return render(request, 'users/templates/signup.html', {'form': form})
 
     def post(self, request):
         form = SignupForm(request.POST)
@@ -17,4 +17,4 @@ class SignupView(View):
             if user is not None:
                 login(request, user)
                 return redirect('home')  # Redirect to the home page after successful login
-        return render(request, 'users/signup.html', {'form': form})
+        return render(request, 'users/templates/signup.html', {'form': form})

@@ -1,0 +1,75 @@
+{% extends "tatum24/templates/base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ user.username }}'s Profile
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <style>
+        .remove-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header>
+        <h1>{{ user.username }}'s Profile</h1>
+        <p>e-mail: {{ user.email }}</p>
+    </header>
+
+    <main>
+        <h2>Your Snippets</h2>
+        {% if snippets %}
+            <ul class="snippet-list">
+                {% for snippet in snippets %}
+                    <li>
+                        <h3><a href="{% url 'snippet_detail' snippet.pk %}">{{ snippet.title }}</a></h3>
+                        {% if user.is_authenticated and snippet.author == user %}
+                            <form action="{% url 'snippet_remove' snippet.pk %}" method="post" class="confirm-delete">
+                                {% csrf_token %}
+                                <button type="button" class="remove-button" onclick="confirmDelete('{{ snippet.pk }}')">Remove</button>
+                            </form>
+                        {% endif %}
+                        <p class="meta">Updated at: {{ snippet.update_date }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You haven't added any snippets yet.</p>
+        {% endif %}
+    </main>
+
+    <footer>
+        <a href="{% url 'home' %}" class="btn">Back to Home</a>
+        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary">Logout</button>
+        </form>
+    </footer>
+</div>
+
+<script>
+    function confirmDelete(snippetId) {
+        if (confirm("Are you sure you want to delete this snippet?")) {
+            var form = document.querySelector('.confirm-delete'); // Assuming there's only one form
+            form.action = "{% url 'snippet_remove' 0 %}".replace('0', snippetId);
+            form.submit();
+        }
+    }
+</script>
+
+{% endblock %}

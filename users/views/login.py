@@ -18,7 +18,7 @@ def LoginView(request):
     else:
         form = AuthenticationForm()
 
-    return render(request, 'users/login.html', {'form': form})
+    return render(request, 'users/templates/login.html', {'form': form})
 
 
 def LogoutView(request):

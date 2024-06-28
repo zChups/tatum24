@@ -1,14 +1,16 @@
+{% extends 'tatum24/templates/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Snippet</title>
+
+{% block title %}
+    Edit Snippet
+{% endblock %}
+
+{% block css %}
     <link rel="stylesheet" href="{% static 'css/snippet_detail.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
 <div class="container mt-5">
     <h2 class="text-center">Edit Snippet</h2>
     <div class="row justify-content-center">
@@ -47,5 +49,23 @@
         </div>
     </div>
 </div>
-</body>
-</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var codeField = document.getElementById('id_code');
+        codeField.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                var start = this.selectionStart;
+                var end = this.selectionEnd;
+
+                // set textarea value to: text before caret + tab + text after caret
+                this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
+
+                // put caret at right position again
+                this.selectionStart = this.selectionEnd = start + 1;
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -71,3 +71,19 @@ class Snippet(models.Model):
 
     def has_user_rated(self, user):
         return self.ratings.filter(user=user).exists()
+
+    def get_comments(self):
+        return self.comments.all()
+
+
+class Comment(models.Model):
+    snippet = models.ForeignKey(Snippet, related_name='comments', on_delete=models.CASCADE)
+    author = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+    content = models.TextField()
+    pub_date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-pub_date']
+
+    def __str__(self):
+        return f'Comment by {self.author.username} on {self.snippet.title}'

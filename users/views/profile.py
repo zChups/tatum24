@@ -1,16 +1,37 @@
 from snippets.models import Snippet
+from users.forms.modify_profile_form import UserProfileForm
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+
+from users.models import Profile
 
 
 @login_required
-def ProfileView(request):
+def profile_view(request):
     user = request.user
     if user.groups.filter(name='Moderator').exists():
         snippets = Snippet.objects.all().order_by('author__username')  # Order by author's username
-        return render(request, 'users/templates/profile/moderator-profile.html', {'user': user, 'snippets': snippets})
+        return render(request, 'users/templates/profile/moderator_profile.html', {'user': user, 'snippets': snippets})
     else:
         snippets = Snippet.objects.filter(author=user)
-        return render(request, 'users/templates/profile/normal-profile.html', {'user': user, 'snippets': snippets})
+        return render(request, 'users/templates/profile/normal_profile.html', {'user': user, 'snippets': snippets})
 
 
+@login_required
+def profile_update_view(request):
+    user_profile = request.user.profile  # Assuming profile is related to the logged-in user
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+            return redirect('profile')  # Redirect to profile view page after successful update
+        else:
+            messages.error(request, 'Error while updating profile')
+
+    else:
+        form = UserProfileForm(instance=user_profile)
+
+    return render(request, 'profile/profile_update.html', {'form': form})

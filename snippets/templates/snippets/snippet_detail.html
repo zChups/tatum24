@@ -29,7 +29,7 @@
         }
 
         .disliked {
-            background-color: red; /* Green color for liked */
+            background-color: red; /* Red color for disliked */
             color: white;
             border: 5px solid darkred;
             padding: 5px 10px;
@@ -47,69 +47,152 @@
         .hidden {
             display: none; /* Hide the button */
         }
+
+        .delete-btn {
+            background-color: #dc3545; /* Red color for delete button */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .PDF {
+            background-color: darkslategray;
+            color: white;
+            border: 1px solid darkgreen;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Style for the copy button */
+        .copy-btn {
+            background-color: #007bff; /* Blue color for copy button */
+            color: white;
+            margin-top: 10px;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <header>
-        <h1>{{ snippet.title }}</h1>
-        <p class="meta">Created at: {{ snippet.pub_date }}</p>
-        <p class="meta">Updated at: {{ snippet.update_date }}</p>
-        <p class="meta">Author: {{ snippet.author }}</p>
-    </header>
+    <div class="container">
+        <header>
+            <h1>{{ snippet.title }}</h1>
+            <p class="meta">Created: {{ snippet.pub_date }}</p>
+            <p class="meta">Updated: {{ snippet.update_date }}</p>
+            <p class="meta">Author: {{ snippet.author }}</p>
+        </header>
 
-    <main>
-        {% if user.is_authenticated and user == snippet.author or user.groups.filter.exists  %}
+        <main>
             <a href="{% url 'edit_snippet' snippet.pk %}" class="btn btn-primary edit-btn">Edit Snippet</a>
-        {% endif %}
 
-        {% if user.is_authenticated %}
-            {% if not bookmarked %}
-                <a href="{% url 'add_bookmark' snippet_id=snippet.pk %}" class="btn btn-success bookmark-btn">Add Bookmark</a>
-            {% else %}
-                <form action="{% url 'delete_bookmark' snippet_id=snippet.pk %}" method="post" class="d-inline">
-                    {% csrf_token %}
-                    <button type="submit" class="btn bookmark-btn bookmarked">Bookmarked</button>
-                </form>
+            {% if user.is_authenticated %}
+                {% if not bookmarked %}
+                    <a href="{% url 'add_bookmark' snippet_id=snippet.pk %}" class="btn btn-success bookmark-btn">Add
+                        Bookmark</a>
+                {% else %}
+                    <form action="{% url 'delete_bookmark' snippet_id=snippet.pk %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn bookmark-btn bookmarked">Bookmarked</button>
+                    </form>
+                {% endif %}
             {% endif %}
-        {% endif %}
 
-        <h3>Description</h3>
-        <div class="code-highlight">
-            {{ snippet.description_html | safe }}
-        </div>
-        <h4>---</h4>
-        <div class="snippet-code highlight">{{ snippet.highlighted_code | safe }}</div>
-    </main>
+            <h3>Description</h3>
+            <div class="code-highlight">
+                {{ snippet.description_html | safe }}
+            </div>
+            <h4>---</h4>
 
-    <footer class="mt-4">
-        <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
-        <a href="{% url 'snippet_list' %}" class="btn btn-secondary">Back to Snippet List</a>
-        {% if user.is_authenticated and user == snippet.author %}
-            <a href="{% url 'profile' %}" class="btn btn-secondary">Back to Profile</a>
-        {% endif %}
-    </footer>
+            <div class="snippet-code highlight">{{ snippet.highlighted_code | safe }}</div>
 
-    <!-- Form to rate the snippet -->
-    <form action="{% url 'rate_snippet' snippet.pk %}" method="post">
-        {% csrf_token %}
-        {% if snippet.user_rating == 'like' %}
-            <button type="button" class="btn liked" disabled>Liked</button>
-            <button type="submit" name="rating" value="dislike" class="btn disliked">Dislike</button>
-        {% elif snippet.user_rating == 'dislike' %}
-            <button type="submit" name="rating" value="like" class="btn liked">Like</button>
-            <button type="button" class="btn disliked" disabled>Disliked</button>
+            <button class="copy-btn btn" onclick="copyToClipboard()">Copy Code</button>
+        </main>
+
+        <footer class="mt-4">
+            <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+            <a href="{% url 'snippet_list' %}" class="btn btn-secondary">Back to Snippet List</a>
+            {% if user.is_authenticated and user == snippet.author %}
+                <a href="{% url 'profile' %}" class="btn btn-secondary">Back to Profile</a>
+            {% endif %}
+            <a href="{% url 'download_pdf' snippet.pk %}" class="PDF btn">Download as PDF</a>
+        </footer>
+
+        <form action="{% url 'rate_snippet' snippet.pk %}" method="post">
+            {% csrf_token %}
+            {% if snippet.user_rating == 'like' %}
+                <button type="button" class="btn liked" disabled>Liked</button>
+                <button type="submit" name="rating" value="dislike" class="btn disliked">Dislike</button>
+            {% elif snippet.user_rating == 'dislike' %}
+                <button type="submit" name="rating" value="like" class="btn liked">Like</button>
+                <button type="button" class="btn disliked" disabled>Disliked</button>
+            {% else %}
+                <button type="submit" name="rating" value="like" class="btn liked">Like</button>
+                <button type="submit" name="rating" value="dislike" class="btn disliked">Dislike</button>
+            {% endif %}
+        </form>
+
+        <footer>
+            <h3>Likes: {{ snippet.get_likes }}</h3>
+            <h3>Dislikes: {{ snippet.get_dislikes }}</h3>
+        </footer>
+
+        {% if snippet.comments.all %}
+            <h3>Comments</h3>
+            <ul>
+                {% for comment in snippet.comments.all %}
+                    <li>
+                        {{ comment.pub_date }} - <strong>{{ comment.author.username }}</strong>
+                        said: {{ comment.content }}
+                        {% if user == comment.author %}
+                            <form action="{% url 'delete_comment' comment.pk %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn delete-btn">Delete</button>
+                            </form>
+                        {% elif user.groups.exists %}
+                            <form action="{% url 'delete_comment' comment.pk %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn delete-btn">Delete</button>
+                            </form>
+                        {% elif user == comment.snippet.author %}
+                            <form action="{% url 'delete_comment' comment.pk %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn delete-btn">Delete</button>
+                            </form>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
         {% else %}
-            <button type="submit" name="rating" value="like" class="btn liked">Like</button>
-            <button type="submit" name="rating" value="dislike" class="btn disliked">Dislike</button>
+            <p>No comments yet.</p>
         {% endif %}
-    </form>
 
-    <!-- Display number of likes and dislikes -->
-    <footer>
-        <h3>Likes: {{ snippet.get_likes }}</h3>
-        <h3>Dislikes: {{ snippet.get_dislikes }}</h3>
-    </footer>
-</div>
+        <h3>Add a Comment</h3>
+        <form method="post" action="{% url 'add_comment' snippet.pk %}">
+            {% csrf_token %}
+            <textarea name="content" rows="4" cols="50"></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+    function copyToClipboard() {
+        var copyText = document.querySelector('.snippet-code .highlight');
+        var range = document.createRange();
+        range.selectNode(copyText);
+        window.getSelection().removeAllRanges();
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+        alert('Code copied to clipboard');
+    }
+</script>
 {% endblock %}
+

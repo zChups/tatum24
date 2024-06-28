@@ -21,7 +21,13 @@ Gli utenti registrati devono poter **valutare (like/dislike)** gli snippet di co
 **Ulteriore implementazione: funzionalità per commenti sotto gli snippet?**
 
 
-pip install pigments \\
-pip install markdown \\
-pip install pillow (images) \\
+pip install pigments 
+
+
+pip install markdown 
+
+
+pip install pillow (images) 
+
+
 pip install xhtml2pdf

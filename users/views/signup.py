@@ -22,5 +22,4 @@ class SignupView(View):
                 Profile.objects.create(user=request.user)
                 messages.success(request, 'Signup successful')
                 return redirect('home')  # Redirect to the home page after successful login
-        messages.error(request, 'Signup error, please try again')
         return render(request, 'users/templates/signup.html', {'form': form})

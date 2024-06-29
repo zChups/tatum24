@@ -50,7 +50,7 @@ class Snippet(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        if not self.id:
+        if not self.id:  # If the snippet has not already been saved
             self.pub_date = timezone.now()
         self.update_date = timezone.now()
         self.description_html = markdown(self.description)  # Convert description to HTML

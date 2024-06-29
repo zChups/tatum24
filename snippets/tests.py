@@ -9,7 +9,7 @@ from snippets.models import Language, Snippet
 class SnippetModelTest(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.user = User.objects.create_user(username='user', password='user')
         self.language = Language.objects.create(name='Python', slug='python', language_code='python')
 
     def test_save_method_with_markdown_and_highlight(self):
@@ -32,6 +32,7 @@ class SnippetModelTest(TestCase):
         expected_highlighted_code = highlight(snippet.code, snippet.language.get_lexer(), HtmlFormatter(linenos=True))
         self.assertEqual(snippet.highlighted_code, expected_highlighted_code)
 
+
 # test_save_method_with_markdown_and_highlight: This test verifies the functionality
 # of the save method in the Snippet model. It creates a Snippet instance
 # with a markdown-formatted description and checks if description_html is
@@ -39,3 +40,6 @@ class SnippetModelTest(TestCase):
 # it verifies that highlighted_code is correctly populated with Pygments-highlighted code.
 
 # highlight is a pygments function
+
+
+

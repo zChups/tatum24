@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from snippets.models import Snippet
 from django.contrib import messages
 
-from snippets.search_input_forms import SnippetSearchForm
+from snippets.forms.search_input_forms import SnippetSearchForm
 
 
 class SnippetForm(forms.ModelForm):

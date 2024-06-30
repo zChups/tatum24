@@ -6,6 +6,7 @@ from snippets.views.popular import TopAuthorsView, TopLanguagesView
 from snippets.views.snippets import SnippetListView, SnippetDetailView, AddSnippetView, SnippetRemoveView, \
     edit_snippet_view, download_pdf_view
 
+
 urlpatterns = [
     path('languages/<slug:slug>/', LanguageDetailView.as_view(), name='language_detail'),
     path('language_list', LanguageListView.as_view(), name='language_list'),

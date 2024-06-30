@@ -11,6 +11,7 @@ from ratings.models import Rating
 from snippets import managers
 
 
+
 class Language(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
@@ -87,3 +88,4 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.author.username} on {self.snippet.title}'
+

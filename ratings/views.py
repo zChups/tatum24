@@ -43,7 +43,7 @@ def TopRatedSnippetsView(request):
     ).annotate(
         # Calculate popularity_score as the difference between total_likes and total_dislikes
         popularity_score=F('total_likes') - F('total_dislikes')
-    ).order_by('-popularity_score' and '-pub_date')[:10]  # Retrieve the top 10 snippets based on popularity_score
+    ).order_by('-popularity_score')[:10]  # Retrieve the top 10 snippets based on popularity_score
 
     popularity_score_arr = []
 

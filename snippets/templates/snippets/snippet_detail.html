@@ -87,6 +87,7 @@
             <p class="meta">Created: {{ snippet.pub_date }}</p>
             <p class="meta">Updated: {{ snippet.update_date }}</p>
             <p class="meta">Author: {{ snippet.author }}</p>
+            <p class="meta">Language: {{ snippet.language }}</p>
         </header>
 
         <main>
@@ -182,17 +183,16 @@
     </div>
 
     <script>
-    function copyToClipboard() {
-        var copyText = document.querySelector('.snippet-code .highlight');
-        var range = document.createRange();
-        range.selectNode(copyText);
-        window.getSelection().removeAllRanges();
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        document.execCommand('copy');
-        window.getSelection().removeAllRanges();
-        alert('Code copied to clipboard');
-    }
-</script>
+        function copyToClipboard() {
+            var copyText = document.querySelector('.snippet-code .highlight');
+
+
+            var textToCopy = copyText.innerText;
+
+            navigator.clipboard.writeText(textToCopy).then(function () {
+                alert('Copied to clipboard \n');
+            })
+        }
+    </script>
 {% endblock %}
 

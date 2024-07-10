@@ -27,6 +27,8 @@ class SignupForm(forms.Form):
             raise forms.ValidationError("This email is already in use. Please choose another.")
         return email
 
+    # Password check
+
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
         if len(password1) < 8:

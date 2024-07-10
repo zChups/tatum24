@@ -24,6 +24,6 @@ def LoginView(request):
 def LogoutView(request):
     logout(request)
     messages.success(request, 'Logout successful')
-    return redirect('home')  # Redirect to the homepage or any other desired URL after logout
+    return redirect('home')
 
 

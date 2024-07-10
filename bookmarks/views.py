@@ -21,32 +21,30 @@ def AddBookmarkView(request, snippet_id):
 
 @login_required
 def DeleteBookmarkView(request, snippet_id):
+    snippet = get_object_or_404(Snippet, pk=snippet_id)
     if request.method == "POST":
-        snippet = get_object_or_404(Snippet, pk=snippet_id)
-        Bookmark.objects.filter(user=request.user, snippet=snippet).delete()
-        messages.success(request, 'Snippet not bookmarked successfully')
-        return HttpResponseRedirect(snippet.get_absolute_url())
+        if snippet.bookmarks.filter(user=request.user).exists():
+            Bookmark.objects.filter(user=request.user, snippet=snippet).delete()
+            messages.success(request, 'Snippet not bookmarked successfully.')
+        else:
+            messages.info(request, 'Snippet was not bookmarked.')
+        return redirect(snippet.get_absolute_url())
     else:
-        snippet = get_object_or_404(Snippet, pk=snippet_id)
         return render(request, 'bookmarks/templates/bookmark/confirm_bookmark_delete.html', {'snippet': snippet})
 
 
 class UserBookmarksListView(ListView):
-    model = Bookmark  # Set the model for the ListView
-    template_name = 'bookmarks/templates/bookmark/user_bookmarks.html'  # Template to render
-    context_object_name = 'bookmarks'  # Context variable name in template
-    paginate_by = 10  # Number of bookmarks per page
+    model = Bookmark
+    template_name = 'bookmarks/templates/bookmark/user_bookmarks.html'
+    context_object_name = 'bookmarks'
+    paginate_by = 10
 
     def get_queryset(self):
         return Bookmark.objects.filter(user=self.request.user)
 
     def dispatch(self, request, *args, **kwargs):
-        # Custom logic to handle non-logged-in users
         if not request.user.is_authenticated:
-            # Redirect non-logged-in users to a different view or URL
-            # Example: Redirect to a login page with a custom message
             return redirect('login')
-
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -57,11 +55,9 @@ class MostBookmarkedView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        # Annotate each Snippet with the count of their bookmarks
         queryset = Snippet.objects.annotate(bookmark_count=Count('bookmarks')).order_by('-bookmark_count')
-        return queryset[:3]  # Limiting to the first three most bookmarked snippets
+        return queryset[:3]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add other context variables for pagination if needed
         return context

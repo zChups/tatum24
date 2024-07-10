@@ -1,10 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
-
 from snippets.models import Snippet
 
 
-# Create your models here.
 class Bookmark(models.Model):
     snippet = models.ForeignKey(Snippet, related_name='bookmarks', on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='bookmarks', on_delete=models.CASCADE)

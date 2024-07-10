@@ -22,13 +22,11 @@
                     <input type="text" class="form-control" id="id_title" name="title" value="{{ form.title.value }}">
                 </div>
                 <div class="form-group">
-                    <label for="id_language">Language:</label>
-                    <select class="form-control" id="id_language" name="language">
-                        {% for choice in form.language %}
-                            <option value="{{ choice.value }}"
-                                    {% if choice.selected %}selected{% endif %}>{{ choice }}</option>
-                        {% endfor %}
-                    </select>
+                    <label for="id_language">Language:</label><br>
+                    {{ form.language }}
+                    {% if form.language.errors %}
+                        <p class="error">{{ form.language.errors|join:" " }}</p>
+                    {% endif %}
                 </div>
                 <div class="form-group">
                     <label for="id_description">Description:</label>
@@ -49,6 +47,8 @@
         </div>
     </div>
 </div>
+
+    <!-- Javascript func. to use tabs in code textarea -->
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

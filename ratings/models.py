@@ -3,7 +3,6 @@ from django.db import models
 from django.utils import timezone
 
 
-# Create your models here.
 class Rating(models.Model):
     LIKE = 'like'
     DISLIKE = 'dislike'
@@ -18,7 +17,7 @@ class Rating(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        unique_together = ('snippet', 'user')  # Ensure each user can rate a snippet only once
+        unique_together = ('snippet', 'user')
 
     def __str__(self):
         return f"{self.user.username} rated '{self.snippet.title}' as {self.get_rating_display()}"

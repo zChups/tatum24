@@ -193,15 +193,12 @@
             var searchInput = document.getElementById('searchInput');
 
             form.addEventListener('submit', function (event) {
-                event.preventDefault(); // Prevent form submission
-
                 // Fetch snippets and check if empty
                 var snippets = document.querySelectorAll('main ul li');
                 if (snippets.length === 0) {
-                    searchInput.value = ''; // Clear search input
+                    searchInput.value = '';
                 }
 
-                // Proceed with form submission
                 form.submit();
             });
         });

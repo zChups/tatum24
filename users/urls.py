@@ -1,5 +1,4 @@
 from django.urls import path
-
 from users.views.login import LoginView, LogoutView
 from users.views.profile import profile_view, profile_update_view
 from users.views.signup import SignupView

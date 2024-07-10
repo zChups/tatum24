@@ -1,4 +1,6 @@
 # tatum24
+
+**pip3 freeze > requirements.txt - pip3 install -r requirements.txt** 
  # Autenticazione e Profilo Utente
 L'applicazione permette l'accesso a tre tipologie di utenti: utente non registrato, utente registrato (normale) e moderatore (sottoclasse di utente registrato).
 
@@ -21,13 +23,11 @@ Gli utenti registrati devono poter **valutare (like/dislike)** gli snippet di co
 **Ulteriore implementazione: funzionalità per commenti sotto gli snippet?**
 
 
-pip install pigments 
+pip install pigments
 
-
-pip install markdown 
-
+pip install markdown
 
 pip install pillow (images) 
 
-
 pip install xhtml2pdf
+

@@ -7,7 +7,6 @@
     <title>Most Bookmarked Snippets</title>
     <link rel="stylesheet" href="{% static 'css/listed.css' %}">
     <style>
-        /* Add any additional custom styles here */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -59,24 +58,6 @@
 
         main ul li a:hover {
             color: #0056b3;
-        }
-
-        .remove-button {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        .remove-button:hover {
-            background-color: #d32f2f;
         }
 
         .pagination {
@@ -143,7 +124,6 @@
                             <a href="{% url 'snippet_detail' snippet.pk %}">{{ snippet.title }}</a>
                         </span>
                         <span>Bookmarks: {{ snippet.bookmark_count }}</span>
-                        <!-- Add more snippet details as needed -->
                     </li>
                 {% endif %}
             {% empty %}
@@ -152,7 +132,6 @@
         </ul>
     </main>
 
-    <!-- Pagination links -->
     <div class="pagination">
         <span class="step-links">
             {% if is_paginated %}

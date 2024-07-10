@@ -11,7 +11,7 @@ from users.models import Profile
 def profile_view(request):
     user = request.user
     if user.groups.filter(name='Moderator').exists():
-        snippets = Snippet.objects.all().order_by('author__username')  # Order by author's username
+        snippets = Snippet.objects.all().order_by('author__username')
         return render(request, 'users/templates/profile/moderator_profile.html', {'user': user, 'snippets': snippets})
     else:
         snippets = Snippet.objects.filter(author=user)
@@ -20,14 +20,14 @@ def profile_view(request):
 
 @login_required
 def profile_update_view(request):
-    user_profile = request.user.profile  # Assuming profile is related to the logged-in user
+    user_profile, created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully')
-            return redirect('profile')  # Redirect to profile view page after successful update
+            return redirect('profile')
         else:
             messages.error(request, 'Error while updating profile')
 

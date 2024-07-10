@@ -11,7 +11,6 @@ from ratings.models import Rating
 from snippets import managers
 
 
-
 class Language(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
@@ -51,11 +50,11 @@ class Snippet(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        if not self.id:  # If the snippet has not already been saved
+        if not self.id:
             self.pub_date = timezone.now()
         self.update_date = timezone.now()
-        self.description_html = markdown(self.description)  # Convert description to HTML
-        self.highlighted_code = self.highlight()  # Highlight code based on language
+        self.description_html = markdown(self.description)
+        self.highlighted_code = self.highlight()
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -88,4 +87,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.author.username} on {self.snippet.title}'
-

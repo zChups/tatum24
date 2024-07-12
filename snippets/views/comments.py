@@ -18,7 +18,7 @@ def add_comment_view(request, snippet_id):
             comment.save()
             messages.success(request, 'Your comment has been added successfully.')
         else:
-            messages.error(request, 'Failed to add comment. Please check the form.')
+            messages.error(request, 'Failed to add comment. Fill the form.')
 
     return redirect('snippet_detail', pk=snippet.pk)
 

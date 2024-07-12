@@ -122,23 +122,7 @@
                 <li><a href="{% url 'language_detail' language.slug %}">{{ language.name }}</a></li>
             {% endfor %}
         </ul>
-        <div class="pagination">
-                <span class="step-links">
-                    {% if languages.has_previous %}
-                        <a href="?page=1">&laquo; First</a>
-                        <a href="?page={{ languages.previous_page_number }}">Previous</a>
-                    {% endif %}
 
-                    <span class="current">
-                        Page {{ languages.number }} of {{ languages.paginator.num_pages }}.
-                    </span>
-
-                    {% if languages.has_next %}
-                        <a href="?page={{ languages.next_page_number }}">Next</a>
-                        <a href="?page={{ languages.paginator.num_pages }}">Last &raquo;</a>
-                    {% endif %}
-                </span>
-        </div>
     </main>
 
 </div>

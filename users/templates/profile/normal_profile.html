@@ -42,9 +42,17 @@
             {% endif %}
 
             <footer>
-            <a href="{% url 'profile_update' %}" class="btn btn-secondary">Update Profile</a>
+                <a href="{% url 'profile_update' %}" class="btn btn-secondary">Update Profile</a>
             </footer>
         </header>
+
+        <footer>
+            <a href="{% url 'home' %}" class="btn">Back to Home</a>
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary">Logout</button>
+            </form>
+        </footer>
 
         <main>
             <h2>Your Snippets</h2>
@@ -71,7 +79,7 @@
             {% endif %}
         </main>
     </div>
-    
+
     <footer>
         <a href="{% url 'home' %}" class="btn">Back to Home</a>
         <form action="{% url 'logout' %}" method="post" style="display: inline;">

@@ -91,7 +91,9 @@
         </header>
 
         <main>
-            <a href="{% url 'edit_snippet' snippet.pk %}" class="btn btn-primary edit-btn">Edit Snippet</a>
+            {% if snippet.author %}
+                <a href="{% url 'edit_snippet' snippet.pk %}" class="btn btn-primary edit-btn">Edit Snippet</a>
+            {% endif %}
 
             {% if user.is_authenticated %}
                 {% if not bookmarked %}
@@ -122,7 +124,7 @@
             {% if user.is_authenticated and user == snippet.author %}
                 <a href="{% url 'profile' %}" class="btn btn-secondary">Back to Profile</a>
             {% endif %}
-            <a href="{% url 'download_pdf' snippet.pk %}" class="PDF btn">Download as PDF</a>
+            <a id="download-pdf-btn" href="{% url 'download_pdf' snippet.pk %}" class="PDF btn">Download as PDF</a>
         </footer>
 
         <form action="{% url 'rate_snippet' snippet.pk %}" method="post">
@@ -193,6 +195,10 @@
                 alert('Copied to clipboard \n');
             })
         }
+
+        document.getElementById('download-pdf-btn').addEventListener('click', function() {
+                alert('Your PDF will be downloaded shortly.');
+            });
     </script>
 {% endblock %}
 

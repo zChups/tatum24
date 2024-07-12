@@ -12,12 +12,8 @@ class TopAuthorsView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        # Annotate each User with the count of their snippets
         queryset = User.objects.annotate(snippet_count=Count('snippets')).order_by('-snippet_count')
-
-        # Exclude authors with 0 snippets
         queryset = queryset.exclude(snippet_count=0)
-
         return queryset
 
 
@@ -29,5 +25,3 @@ class TopLanguagesView(ListView):
 
     def get_queryset(self):
         return Snippet.objects.values('language__name').annotate(snippet_count=Count('id')).order_by('-snippet_count')
-
-

@@ -136,23 +136,6 @@
         </table>
     </main>
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if popular_top_authors_list.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ popular_top_authors_list.previous_page_number }}">previous</a>
-            {% endif %}
-
-            <span class="current">
-                Page {{ popular_top_authors_list.number }} of {{ popular_top_authors_list.paginator.num_pages }}.
-            </span>
-
-            {% if popular_top_authors_list.has_next %}
-                <a href="?page={{ popular_top_authors_list.next_page_number }}">next</a>
-                <a href="?page={{ popular_top_authors_list.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
 </div>
 </body>
 </html>

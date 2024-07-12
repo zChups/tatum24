@@ -1,45 +1,170 @@
-from django.test import TestCase
-from django.contrib.auth.models import User
-from markdown import markdown
-from pygments.formatters.html import HtmlFormatter
-from pygments import highlight
-from snippets.models import Language, Snippet
+from django.test import TestCase, Client
+from django.utils import timezone
+from django.contrib.auth.models import User, Group
+from snippets.models import Snippet, Comment, Language
+from django.urls import reverse
+
+"""
+    Function Testing
+"""
 
 
-class SnippetModelTest(TestCase):
+class CommentTestCase(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(username='user', password='user')
-        self.language = Language.objects.create(name='Python', slug='python', language_code='python')
+        self.user = User.objects.create_user(username='test-user', password='password123')
 
-    def test_save_method_with_markdown_and_highlight(self):
-        """
-        Test save method of Snippet model with markdown conversion and code highlighting.
-        """
-        original_description = 'This is a *test* snippet'
-        snippet = Snippet.objects.create(
+        # Create a test language
+        self.language = Language.objects.create(
+            name='Python',
+            slug='python',
+            language_code='python'
+        )
+        self.snippet = Snippet.objects.create(
             title='Test Snippet',
             language=self.language,
             author=self.user,
-            description=original_description,
-            code='print("Hello, World!")'
+            description='This is a test snippet',
+            code='print("Hi dear!")'
         )
 
-        # Check that description_html is correctly populated with markdown converted HTML
-        self.assertEqual(snippet.description_html, markdown(original_description))
+    def test_create_comment_valid(self):
+        initial_count = Comment.objects.count()
+        comment = Comment.objects.create(
+            snippet=self.snippet,
+            author=self.user,
+            content='This is a valid comment'
+        )
 
-        # Check that highlighted_code is correctly populated with Pygments highlighted code
-        expected_highlighted_code = highlight(snippet.code, snippet.language.get_lexer(), HtmlFormatter(linenos=True))
-        self.assertEqual(snippet.highlighted_code, expected_highlighted_code)
+        self.assertEqual(Comment.objects.count(), initial_count + 1)
+        self.assertEqual(comment.snippet, self.snippet)
+        self.assertEqual(comment.author, self.user)
+        self.assertEqual(comment.content, 'This is a valid comment')
+
+    def test_create_comment_long_content(self):
+        initial_count = Comment.objects.count()
+
+        long_content = 'a' * 5000
+
+        comment = Comment.objects.create(
+            snippet=self.snippet,
+            author=self.user,
+            content=long_content
+        )
+
+        # Assert that the comment was created successfully
+        self.assertEqual(Comment.objects.count(), initial_count + 1)
+        self.assertEqual(comment.snippet, self.snippet)
+        self.assertEqual(comment.author, self.user)
+        self.assertEqual(comment.content, long_content)
+
+    def test_create_comment_unicode_content(self):
+        initial_count = Comment.objects.count()
+        unicode_content = 'Unicode characters: 한글, 漢字, こんに'
+
+        comment = Comment.objects.create(
+            snippet=self.snippet,
+            author=self.user,
+            content=unicode_content
+        )
+        self.assertEqual(Comment.objects.count(), initial_count + 1)
+        self.assertEqual(comment.snippet, self.snippet)
+        self.assertEqual(comment.author, self.user)
+        self.assertEqual(comment.content, unicode_content)
+
+    def test_update_comment(self):
+        comment = Comment.objects.create(
+            snippet=self.snippet,
+            author=self.user,
+            content='Original content'
+        )
+        comment.content = 'Updated content'
+        comment.save()
+        updated_comment = Comment.objects.get(id=comment.id)
+        self.assertEqual(updated_comment.content, 'Updated content')
+
+    def test_delete_comment(self):
+        comment = Comment.objects.create(
+            snippet=self.snippet,
+            author=self.user,
+            content='To be deleted'
+        )
+        initial_count = Comment.objects.count()
+        comment.delete()
+        self.assertEqual(Comment.objects.count(), initial_count - 1)
+
+    def test_get_absolute_url(self):
+        comment = Comment.objects.create(
+            snippet=self.snippet,
+            author=self.user,
+            content='Test comment'
+        )
+        expected_url = reverse('snippet_detail', kwargs={'pk': self.snippet.pk})
+        self.assertEqual(comment.get_absolute_url(), expected_url)
 
 
-# test_save_method_with_markdown_and_highlight: This test verifies the functionality
-# of the save method in the Snippet model. It creates a Snippet instance
-# with a markdown-formatted description and checks if description_html is
-# correctly populated with the HTML converted from markdown. Additionally,
-# it verifies that highlighted_code is correctly populated with Pygments-highlighted code.
-
-# highlight is a pygments function
+"""
+    
+    View Testing
+    
+"""
 
 
+class EditSnippetViewTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='test-user', password='password123')
 
+        self.moderator = User.objects.create_user(username='moderator', password='password456')
+        self.moderator_group = Group.objects.create(name='Moderator')
+        self.moderator.groups.add(self.moderator_group)
+
+        self.language = Language.objects.create(
+            name='Python',
+            slug='python',
+            language_code='python'
+        )
+
+        self.snippet = Snippet.objects.create(
+            title='Test Snippet',
+            language=self.language,
+            author=self.user,
+            description='This is a test snippet',
+            code='print("Hello, world!")',
+            pub_date=timezone.now()
+        )
+
+    def test_edit_snippet_author(self):
+        self.client.force_login(self.user)
+        response = self.client.post(reverse('edit_snippet', args=[self.snippet.pk]), {
+            'title': 'Updated Snippet Title',
+            'language': self.language.pk,
+            'description': 'Updated description',
+            'code': 'print("Updated code!")',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'snippets/templates/snippets/edit_snippet.html')
+
+    def test_edit_snippet_moderator(self):
+        self.client.force_login(self.moderator)
+
+        response = self.client.post(reverse('edit_snippet', args=[self.snippet.pk]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'snippets/templates/snippets/edit_snippet.html')
+
+    def test_edit_snippet_no_permission(self):
+        unauthorized_user = User.objects.create_user(username='unauthorized', password='password789')
+        self.client.force_login(unauthorized_user)
+
+        # Try to modify the snippet
+        response = self.client.post(reverse('edit_snippet', args=[self.snippet.pk]), {
+            'title': 'Attempt to Edit Snippet',
+            'language': self.language.slug,
+            'description': 'Attempt to modify',
+            'code': 'print("Attempt to modify code")',
+        })
+
+        self.assertRedirects(response, reverse('snippet_detail', args=[self.snippet.pk]))
+        updated_snippet = Snippet.objects.get(pk=self.snippet.pk)
+        self.assertEqual(updated_snippet.title, 'Test Snippet')

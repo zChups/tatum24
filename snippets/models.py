@@ -8,14 +8,12 @@ from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 
 from ratings.models import Rating
-from snippets import managers
 
 
 class Language(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True)  # Readable string
     language_code = models.CharField(max_length=50)
-    objects = managers.LanguageManager()
 
     class Meta:
         ordering = ['name']
@@ -40,7 +38,6 @@ class Snippet(models.Model):
     highlighted_code = models.TextField(editable=False)
     pub_date = models.DateTimeField(default=timezone.now, editable=False)
     update_date = models.DateTimeField(default=timezone.now, editable=False)
-    objects = managers.SnippetManager()
     tags = models.CharField(max_length=255, default='')
 
     class Meta:
@@ -61,7 +58,7 @@ class Snippet(models.Model):
         return reverse('snippet_detail', kwargs={'pk': self.pk})
 
     def highlight(self):
-        return highlight(self.code, self.language.get_lexer(), HtmlFormatter(linenos=True))
+        return highlight(self.code, self.language.get_lexer(), HtmlFormatter(linenos=False))
 
     def get_likes(self):
         return self.ratings.filter(rating=Rating.LIKE).count()
@@ -87,3 +84,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.author.username} on {self.snippet.title}'
+
+    def get_absolute_url(self):
+        return reverse('snippet_detail', kwargs={'pk': self.pk})

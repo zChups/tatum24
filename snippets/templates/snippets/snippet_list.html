@@ -139,15 +139,13 @@
 <div class="container">
     <header>
         <h1>Snippet List</h1>
-
         <nav>
             <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'add_snippet' %}" class="btn">Add Snippet</a> <!-- Link to Add Snippet -->
+            <a href="{% url 'add_snippet' %}" class="btn">Add Snippet</a>
         </nav>
     </header>
 
     <form method="get" action="{% url 'snippet_list' %}" class="form-inline my-2 my-lg-0">
-        {% csrf_token %}
         <label>
             <input type="text" id="searchInput" name="q" value="{{ request.GET.q }}" placeholder="Search..."
                    class="form-control mr-sm-2">
@@ -169,23 +167,7 @@
         </ul>
     </main>
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if snippets.has_previous %}
-                <a href="?page=1">&laquo; First</a>
-                <a href="?page={{ snippets.previous_page_number }}">Previous</a>
-            {% endif %}
-
-            <span class="current">
-                Page {{ snippets.number }} of {{ snippets.paginator.num_pages }}.
-            </span>
-
-            {% if snippets.has_next %}
-                <a href="?page={{ snippets.next_page_number }}">Next</a>
-                <a href="?page={{ snippets.paginator.num_pages }}">Last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
+</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -193,7 +175,6 @@
             var searchInput = document.getElementById('searchInput');
 
             form.addEventListener('submit', function (event) {
-                // Fetch snippets and check if empty
                 var snippets = document.querySelectorAll('main ul li');
                 if (snippets.length === 0) {
                     searchInput.value = '';
@@ -203,6 +184,5 @@
             });
         });
     </script>
-</div>
 </body>
 </html>

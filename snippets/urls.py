@@ -1,10 +1,11 @@
 from django.urls import path
 
 from snippets.views.comments import add_comment_view, delete_comment_view
+from snippets.views.download_pdf import download_pdf_view
 from snippets.views.languages import LanguageListView, LanguageDetailView
 from snippets.views.popular import TopAuthorsView, TopLanguagesView
 from snippets.views.snippets import SnippetListView, SnippetDetailView, AddSnippetView, SnippetRemoveView, \
-    edit_snippet_view, download_pdf_view
+    edit_snippet_view
 
 urlpatterns = [
     path('', SnippetListView.as_view(), name='snippet_list'),
@@ -32,7 +33,7 @@ urlpatterns += [
 # Comments
 
 urlpatterns += [
-    path('<int:snippet_id>/add-comment/', add_comment_view, name='add_comment'),
+    path('<int:snippet_id>/add_comment/', add_comment_view, name='add_comment'),
     path('<int:comment_id>/delete-comment/', delete_comment_view, name='delete_comment'),
 
 ]

@@ -13,7 +13,7 @@ pip3 install -r requirements.txt
 
 Per avviare il server eseguire il comando: 
 ```sh
-**python3 manage.py runserver**.
+python3 manage.py runserver
 ```
 Il server sarà accessibile dall'url: **http://127.0.0.1:8000**
 

@@ -14,7 +14,6 @@ class CommentTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='test-user', password='password123')
 
-        # Create a test language
         self.language = Language.objects.create(
             name='Python',
             slug='python',
@@ -52,7 +51,6 @@ class CommentTestCase(TestCase):
             content=long_content
         )
 
-        # Assert that the comment was created successfully
         self.assertEqual(Comment.objects.count(), initial_count + 1)
         self.assertEqual(comment.snippet, self.snippet)
         self.assertEqual(comment.author, self.user)
@@ -157,7 +155,6 @@ class EditSnippetViewTestCase(TestCase):
         unauthorized_user = User.objects.create_user(username='unauthorized', password='password789')
         self.client.force_login(unauthorized_user)
 
-        # Try to modify the snippet
         response = self.client.post(reverse('edit_snippet', args=[self.snippet.pk]), {
             'title': 'Attempt to Edit Snippet',
             'language': self.language.slug,

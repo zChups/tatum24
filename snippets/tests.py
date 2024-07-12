@@ -5,7 +5,7 @@ from snippets.models import Snippet, Comment, Language
 from django.urls import reverse
 
 """
-    Function Testing
+    Code Testing
 """
 
 

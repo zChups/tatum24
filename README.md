@@ -2,7 +2,12 @@ Le informazioni relative al progetto sono reperibili all'interno del file [elabo
 
 Comandi per gestire i requisiti del progetto: 
 
-Eseguire l'accesso al virtual environment con il comando:
+Da linea di comando eseguire:
+```sh
+git clone https://github.com/zChups/tatum24.git
+cd tatum24/
+```
+Eseguire l'accesso al virtual environment con il comando (previa installazione del comando pipenv):
 ```sh
 pipenv shell
 ```

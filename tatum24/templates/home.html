@@ -4,12 +4,11 @@
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <style>
-        /* Global styles */
         body {
             font-family: 'Verdana', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9; /* Soft background color */
+            background-color: #f4f4f9;
             color: #333;
             line-height: 1.6;
 
@@ -18,30 +17,29 @@
                 margin: 0 auto;
                 padding: 20px;
                 position: relative;
-                background-color: #fff; /* White background */
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft box shadow */
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 border-radius: 8px;
             }
 
-            /* Header styles */
 
             .header {
                 text-align: center;
                 margin-bottom: 40px;
                 padding: 20px 0;
-                border-bottom: 1px solid #ddd; /* Light border */
+                border-bottom: 1px solid #ddd;
             }
 
             .header h1 {
                 font-size: 2.5em;
-                color: #0056b3; /* Accent color */
+                color: #0056b3;
                 margin: 10px 0;
             }
 
             .header p {
                 font-size: 1.2em;
                 margin-top: 5px;
-                color: #666; /* Darker text color */
+                color: #666;
             }
 
             .header .user-info {
@@ -55,16 +53,15 @@
             }
 
             .header .user-info a:hover {
-                color: #0056b3; /* Darker accent color on hover */
+                color: #0056b3;
             }
 
-            /* Navigation styles */
 
             .menu {
                 text-align: center;
                 margin-bottom: 40px;
                 padding: 10px 0;
-                border-bottom: 1px solid #ddd; /* Light border */
+                border-bottom: 1px solid #ddd;
             }
 
             .menu ul {
@@ -78,7 +75,7 @@
             }
 
             .menu ul li a {
-                color: #f0f0f0; /* Accent color */
+                color: #f0f0f0;
                 text-decoration: none;
                 font-size: 1.2em;
                 transition: color 0.3s;
@@ -88,10 +85,9 @@
 
             .menu ul li a:hover {
                 background-color: #007BFF;
-                color: #fff; /* White text on hover */
+                color: #fff;
             }
 
-            /* Profile button */
 
             .profile-button {
                 position: absolute;
@@ -100,7 +96,7 @@
                 padding: 10px 20px;
                 border: none;
                 border-radius: 4px;
-                background-color: #0056b3; /* Darker accent color */
+                background-color: #0056b3;
                 color: white;
                 text-decoration: none;
                 font-size: 16px;
@@ -108,22 +104,20 @@
             }
 
             .profile-button:hover {
-                background-color: #004080; /* Even darker on hover */
+                background-color: #004080;
             }
 
-            /* Main content */
 
             .main-content {
                 padding: 20px 0;
             }
 
-            /* Footer */
 
             footer {
                 text-align: center;
                 margin-top: 20px;
                 padding: 10px 0;
-                border-top: 1px solid #ddd; /* Light border */
+                border-top: 1px solid #ddd;
             }
 
             footer .footer-links a {
@@ -134,8 +128,8 @@
             }
 
             footer .footer-links a:hover {
-                color: #0056b3; /* Darker accent color on hover */
-            }
+                color: #0056b3;
+            }}
 
     </style>
 
@@ -147,7 +141,6 @@
 {% block content %}
     <body>
     <div class="container">
-        <!-- Header -->
         <header class="header">
             <h1>Welcome to Tatum24</h1>
             <p>Your source for coding inspirations</p>
@@ -170,7 +163,6 @@
                         Up</a></p>
                 {% endif %}
             </div>
-            <!-- Profile button -->
             {% if request.user.is_authenticated %}
                 <a href="{% url 'profile' %}" class="profile-button">Profile</a>
             {% endif %}
@@ -218,7 +210,6 @@
             </ul>
         </nav>
 
-        <!-- Footer -->
         <footer>
             <p>&copy; 2024 Tatum24. All rights reserved.</p>
         </footer>

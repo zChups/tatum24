@@ -25,8 +25,8 @@ body {
 .header h1 {
     font-size: 3rem;
     font-family: 'Georgia', serif;
-    color: #fff; /* white text on dark background for better contrast */
-    text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.8); /* shadow for text readability */
+    color: #fff;
+    text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.8);
 }
 
 .header p {
@@ -36,7 +36,7 @@ body {
 }
 
 .menu {
-    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent dark background for menu */
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 10px 0;
     border-radius: 5px;
 }
@@ -62,7 +62,7 @@ body {
 }
 
 .menu ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* light background on hover */
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 

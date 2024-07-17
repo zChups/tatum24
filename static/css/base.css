@@ -5,7 +5,7 @@ ul.messages {
     transform: translate(-50%, -50%);
     z-index: 1000;
     list-style-type: none;
-    max-width: 400px; /* Limit the width of the messages box */
+    max-width: 400px;
 }
 
 ul.messages li {

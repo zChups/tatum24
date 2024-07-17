@@ -62,12 +62,9 @@
                         <li>
                             <h3><a href="{% url 'snippet_detail' snippet.pk %}">{{ snippet.title }}</a></h3>
                             {% if user.is_authenticated and snippet.author == user %}
-                                <form action="{% url 'snippet_remove' snippet.pk %}" method="post"
-                                      class="confirm-delete">
+                                <form id="delete-form-{{ snippet.pk }}" action="{% url 'snippet_remove' snippet.pk %}" method="post" class="confirm-delete">
                                     {% csrf_token %}
-                                    <button type="button" class="remove-button"
-                                            onclick="confirmDelete('{{ snippet.pk }}')">Remove
-                                    </button>
+                                    <button type="button" class="remove-button" onclick="confirmDelete('{{ snippet.pk }}')">Remove</button>
                                 </form>
                             {% endif %}
                             <p class="meta">Updated at: {{ snippet.update_date }}</p>
@@ -88,4 +85,11 @@
         </form>
     </footer>
 
+    <script>
+        function confirmDelete(snippetId) {
+            if (confirm('Are you sure you want to delete this snippet?')) {
+                document.getElementById('delete-form-' + snippetId).submit();
+            }
+        }
+    </script>
 {% endblock %}
